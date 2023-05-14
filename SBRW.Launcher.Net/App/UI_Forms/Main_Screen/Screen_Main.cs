@@ -3933,55 +3933,7 @@ namespace SBRW.Launcher.App.UI_Forms.Main_Screen
 
                     Format_System_Storage Detected_Drive = System_Storage.Drive_Full_Info(Save_Settings.Live_Data.Game_Path, false, true);
 
-#if !(RELEASE_UNIX || DEBUG_UNIX)
-                    if (Detected_Drive.TotalFreeSpace < 8000000000 ||
-                        !string.Equals(Detected_Drive.DriveFormat, "NTFS", StringComparison.InvariantCultureIgnoreCase))
-#else
-                    if (Detected_Drive.TotalFreeSpace < 8000000000 && !Bypass_Storage_Requirement && Save_Settings.Live_Data.Alert_Storage_Space == "0")
-#endif
-                    {
-                        if (UI_MODE != 6)
-                        {
-                            UI_MODE = 6;
-                        }
-
-#if !(RELEASE_UNIX || DEBUG_UNIX)
-                        if (!string.Equals(Detected_Drive.DriveFormat, "NTFS", StringComparison.InvariantCultureIgnoreCase))
-                        {
-                            Label_Download_Information_Support.SafeInvokeAction(() =>
-                            Label_Download_Information_Support.Text = ("Playing the game on a non-NTFS-formatted drive is not supported.").ToUpper(), this, false);
-                            Label_Download_Information.SafeInvokeAction(() =>
-                            Label_Download_Information.Text = ("Drive '" + Detected_Drive.Name + "' is formatted with: " + Detected_Drive.DriveFormat + " Type.").ToUpper(), this);
-                        }
-                        else
-                        {
-                            Label_Download_Information.SafeInvokeAction(() =>
-                            Label_Download_Information.Text = ("Make sure you have at least 8GB of free space on hard drive.").ToUpperInvariant(), this);
-                        }
-
-                        FunctionStatus.IsVerifyHashDisabled = true;
-#else
-                        Label_Download_Information.SafeInvokeAction(() =>
-                        Label_Download_Information.Text = ("Make sure you have at least 8GB of free space on hard drive.").ToUpperInvariant(), this);
-
-                        DialogResult Live_Prompt_Data = new Update_Popup_Screen.Screen_Update_Popup(false).ShowDialog();
-                        /*"Click Ignore to Enable Storage Detection Bypass (Unix Builds Only) and Restarts the Downloader" +
-                            "Click Retry to temporary bypass the Storage Detection." +
-                            "Click Ok, to Close this Message";
-                         */
-                        switch (Live_Prompt_Data)
-                        {
-                            case DialogResult.Ignore:
-                                Save_Settings.Live_Data.Alert_Storage_Space = "1";
-                                Game_Folder_Checks(true);
-                                break;
-                            case DialogResult.Retry:
-                                Game_Folder_Checks(true);
-                                break;
-                        }
-#endif
-                    }
-                    else if (Save_Settings.Live_Data.Launcher_CDN.StartsWith("http://localhost") || Save_Settings.Live_Data.Launcher_CDN.StartsWith("https://localhost"))
+                    if (Save_Settings.Live_Data.Launcher_CDN.StartsWith("http://localhost") || Save_Settings.Live_Data.Launcher_CDN.StartsWith("https://localhost"))
                     {
                         if (UI_MODE != 6)
                         {
