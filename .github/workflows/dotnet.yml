@@ -2,17 +2,8 @@ name: Stable Development Build
 
 on:
  push:
-    paths:
-      - SBRW.Launcher.RunTime/InsiderKit/**
     branches:
-      - development
-      - Net.Standard
- pull_request:
-    paths:
-      - SBRW.Launcher.RunTime/InsiderKit/**
-    branches:
-      - development
-      - Net.Standard
+      - '*'
  
 jobs:
   build:
